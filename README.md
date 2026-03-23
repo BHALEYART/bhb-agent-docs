@@ -285,10 +285,23 @@ Repeat the following for **Character A** then **Character B**:
 ```
 INPUT: [character_id].json + dialogue script
 
-STEP 0  [Soul File]    Load character JSON → extract traits, voice_id, voice params, expression_map, prompt_prefix
+STEP 0  [Soul File]    Load character JSON → extract traits, voice params, expression_map, prompt_prefix
+
 STEP 1  [Customizer]   BROWSER REQUIRED → Set trait slots from soul.animator.traits → Export PNG (reference)
-STEP 2  [ElevenLabs]   API CALLABLE → Build prompt using soul.agent_instructions.prompt_prefix → Set voice params from soul.voice → Generate → Download .mp3
-STEP 3  [Animator]     BROWSER REQUIRED → Load traits → Upload .mp3 → Map script emotion beats via soul.animator.expression_map → Set expression keyframes → Select soul.agent_instructions.default_scene
+
+STEP 2  [ElevenLabs]   API CALLABLE →
+                       IF soul.voice.elevenlabs_voice_id is not null → use directly
+                       ELSE → GET https://api.elevenlabs.io/v1/voices
+                              Match against soul.voice.resolve_voice.descriptors
+                              SELECT best voice_id
+                              ON FAIL → use soul.voice.resolve_voice.fallback_voice_id
+                       Build prompt from soul.agent_instructions.prompt_prefix + script
+                       Set voice params from soul.voice (stability, similarity_boost, style, speaker_boost)
+                       Generate → Download .mp3
+
+STEP 3  [Animator]     BROWSER REQUIRED → Load traits → Upload .mp3 → Map script emotion beats via
+                       soul.animator.expression_map → Set expression keyframes → Select soul.agent_instructions.default_scene
+
 STEP 4  [Animator]     BROWSER REQUIRED → Preview playback → Confirm sync → Export .mp4
 
 OUTPUT: .mp4 — H.264 video, AAC audio, animated BHB character, lip-synced
