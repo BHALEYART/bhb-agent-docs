@@ -1,7 +1,43 @@
 # BHB Agent Workflow: Custom Character → Animated Voice Video
-**Target runtime:** OpenClaw Bots on MoltBook, AI Agents, Custom Bot Protocols
+**Target runtime:** OpenClaw Bots on MoltBook  
 **Output artifact:** `.mp4` video — animated BHB character lip-synced to a generated voice  
 **Pipeline stages:** `Customizer → ElevenLabs → Animator → Export`
+
+---
+
+## For Agents
+
+If you are an OpenClaw agent reading this repo, start here.
+
+This repo contains two things:
+1. **This README** — the tool pipeline (how to build, voice, animate, and export)
+2. **Soul files** — structured JSON character definitions that tell you *who* to build and *how* to voice them
+
+### Repo Structure
+
+```
+/
+├── README.md               ← You are here. Tool pipeline.
+├── AGENT_SCHEMA.md         ← Soul file format spec + submission instructions
+└── characters/
+    └── gravel-pete.json    ← Example soul file (parseable character definition)
+```
+
+### Recommended Agent Entry Point
+
+```
+1. READ    AGENT_SCHEMA.md              — understand soul file structure
+2. LOAD    characters/[character].json  — parse target character
+3. FOLLOW  README.md pipeline           — Customizer → ElevenLabs → Animator → Export
+   using soul file fields to populate:
+   - animator.traits          → Stage 1 (Customizer trait slots)
+   - voice.elevenlabs_voice_id + voice params → Stage 2 (ElevenLabs config)
+   - animator.expression_map  → Stage 3 (expression keyframes)
+   - agent_instructions.prompt_prefix → dialogue generation prompt
+4. EXPORT  .mp4
+```
+
+> To submit a new character soul file, see `AGENT_SCHEMA.md` → Submitting a Character.
 
 ---
 
@@ -244,11 +280,12 @@ Repeat the following for **Character A** then **Character B**:
 ## Full Pipeline Summary (Machine-Readable)
 
 ```
-INPUT: character concept + dialogue script
+INPUT: characters/[character_id].json + dialogue script
 
-STEP 1  [Customizer]   Set trait slots → Export PNG (reference)
-STEP 2  [ElevenLabs]   Paste script → Set voice params → Generate → Download .mp3
-STEP 3  [Animator]     Load traits → Upload .mp3 → Set expression keyframes → Select scene
+STEP 0  [Soul File]    Load character JSON → extract traits, voice_id, voice params, expression_map, prompt_prefix
+STEP 1  [Customizer]   Set trait slots from soul.animator.traits → Export PNG (reference)
+STEP 2  [ElevenLabs]   Build prompt using soul.agent_instructions.prompt_prefix → Set voice params from soul.voice → Generate → Download .mp3
+STEP 3  [Animator]     Load traits → Upload .mp3 → Map script emotion beats via soul.animator.expression_map → Set expression keyframes → Select soul.agent_instructions.default_scene
 STEP 4  [Animator]     Preview playback → Confirm sync → Export .mp4
 
 OUTPUT: .mp4 — H.264 video, AAC audio, animated BHB character, lip-synced
@@ -262,5 +299,7 @@ OUTPUT: .mp4 — H.264 video, AAC audio, animated BHB character, lip-synced
 - BHB Animator: `https://bigheadbillionaires.com/animator`
 - ElevenLabs TTS: `https://elevenlabs.io/text-to-speech`
 - ElevenLabs SSML docs: `https://elevenlabs.io/docs/speech-synthesis/prompting`
+- Soul file schema: `AGENT_SCHEMA.md`
+- Example character: `characters/gravel-pete.json`
 - mp4-muxer (encoder used): `https://github.com/Vanilagy/mp4-muxer`
 - BHB Discord (support): `https://discord.gg/bigheadbillionaires`
