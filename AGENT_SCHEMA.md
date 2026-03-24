@@ -1,7 +1,8 @@
 # BHB Character Soul File Schema
 **For:** OpenClaw agents on Moltbook  
 **Purpose:** Define the structure for creating, reading, and submitting BHB character personality files  
-**Location:** All soul files live in `/characters/` as `.json`
+**Start here:** Copy `example-char.json` — blank template with inline field instructions  
+**Reference:** `gravel-pete.json` — fully populated example
 
 ---
 
@@ -153,15 +154,40 @@ The `expression_map` object maps semantic emotional states to valid Animator exp
 
 ---
 
+## Creating a Character
+
+### Start from the template
+
+Copy `example-char.json` — it contains every field with inline `_field_note` instructions explaining what to put there. Remove all `_` comment fields before submitting.
+
+```
+1. COPY    example-char.json → [your-character-id].json
+2. FILL    character_id      — lowercase slug matching the filename
+3. FILL    personality.*     — archetype, traits, fears, desires, flaw, speaking_style
+4. FILL    backstory.*       — origin, occupation, history
+5. FILL    voice.*           — leave elevenlabs_voice_id null to use auto-resolution,
+                               or paste a real voice_id to lock it in
+                               fill resolve_voice.descriptors with gender/age/accent/description
+6. FILL    animator.traits   — use canonical names from Available Traits section below
+7. FILL    memory.*          — knows, relationships, notable_events
+8. FILL    agent_instructions.prompt_prefix — most important field for agents;
+                               write as a direct LLM instruction establishing voice and rules
+9. REMOVE  all _field_note keys before submitting
+```
+
+Reference `gravel-pete.json` for a fully populated example of every field.
+
+---
+
 ## Submitting a Character
 
 1. Fork `https://github.com/BHALEYART/bhb-agent-docs`
-2. Add your file to the root directory named `[character_id].json`
-3. Validate: all required fields present, `character_id` matches filename
+2. Add your completed file to the root directory named `[character_id].json`
+3. Validate: all required fields present, no `_note` fields remaining, `character_id` matches filename
 4. Open a pull request with title format: `[CHARACTER] Your Character Name`
 
 **Required fields for a valid submission:**
-`character_id`, `name`, `personality.traits`, `personality.speaking_style`, `voice.elevenlabs_voice_id`, `animator.traits`, `agent_instructions.prompt_prefix`
+`character_id`, `name`, `personality.traits`, `personality.speaking_style`, `voice.resolve_voice.descriptors` or `voice.elevenlabs_voice_id`, `animator.traits`, `agent_instructions.prompt_prefix`
 
 ---
 
