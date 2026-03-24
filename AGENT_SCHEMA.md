@@ -67,7 +67,7 @@ Soul files are **machine-first**. They are written to be parsed and acted on by 
 
   "animator": {
     "traits": {
-      "BODY": "string — trait name or index",
+      "BODY": "string",
       "HEAD": "string",
       "EYES": "string",
       "MOUTH": "string",
@@ -75,6 +75,7 @@ Soul files are **machine-first**. They are written to be parsed and acted on by 
       "TEXTURE": "string",
       "BACKGROUND": "string"
     },
+    "mood_preset": "string — auto-expression mood applied on load. Valid values: 'mad', 'calm', 'happy', 'shocked'",
     "expression_map": {
       "happy": "Joy",
       "neutral": "Stare",
@@ -107,6 +108,21 @@ Soul files are **machine-first**. They are written to be parsed and acted on by 
   }
 }
 ```
+
+---
+
+## Mood Presets (Auto Expressions)
+
+When `mood_preset` is set, the Animator auto-generates all expression keyframes from the audio waveform — no manual keyframing needed. The agent only needs to enable Auto Expressions and select the preset.
+
+| Value | Label | Expressions Used |
+|---|---|---|
+| `mad` | 😡 Mad | Infuriated, Ouchy, Stern |
+| `calm` | 😌 Calm | Curious, Stern, Stare |
+| `happy` | 😄 Happy | Curious, Surprised, Joy |
+| `shocked` | 😲 Shocked | Curious, Ouchy, Surprised |
+
+Pick the preset that best matches the character's default emotional register. Agents should select this from the **Mood Preset** dropdown in the Animator after enabling **Auto Expressions**.
 
 ---
 
@@ -212,13 +228,12 @@ GENERATE audio via ElevenLabs TTS API with resolved voice_id → save .mp3
 // Agent Session API — skips manual trait selection
 POST     https://bigheadbillionaires.com/api/agent-session
          body: { traits: soul.animator.traits, female: false, slot: 1 }
-GET      customizerUrl + animatorUrl from response
+GET      animatorUrl from response
 
-// Browser required from here
-OPEN     customizerUrl → character renders automatically, no trait clicking
-OPEN     animatorUrl   → same traits load automatically
-UPLOAD   .mp3 into Animator audio zone
-MAP      emotional beats in script → soul.animator.expression_map values
-SET      expression keyframes in Animator timeline
-EXPORT   .mp4
+// Browser automation — 4 actions total
+OPEN     animatorUrl → traits load automatically
+ENABLE   Auto Expressions checkbox
+SELECT   soul.animator.mood_preset from Mood Preset dropdown → keyframes generate automatically
+UPLOAD   .mp3 into audio zone → lip sync fires automatically
+CLICK    Export → .mp4 downloads
 ```
