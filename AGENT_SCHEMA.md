@@ -98,6 +98,8 @@ Soul files are **machine-first**. They are written to be parsed and acted on by 
   },
 
   "agent_instructions": {
+    "agent_session_endpoint": "https://bigheadbillionaires.com/api/agent-session",
+    "agent_session_payload": "string — instruction for how to use the endpoint with soul.animator.traits",
     "prompt_prefix": "string — prepend this to any LLM prompt to establish character voice",
     "content_boundaries": ["array — topics or behaviors this character avoids"],
     "default_scene": "string — suggested Animator background scene for this character"
@@ -179,9 +181,18 @@ ELSE
 
 SET      ElevenLabs params from soul.voice (stability, similarity_boost, style, speaker_boost)
 BUILD    prompt using soul.agent_instructions.prompt_prefix + dialogue content
-GENERATE audio via ElevenLabs TTS API with resolved voice_id
-LOAD     Animator traits from soul.animator.traits  [BROWSER REQUIRED]
+GENERATE audio via ElevenLabs TTS API with resolved voice_id → save .mp3
+
+// Agent Session API — skips manual trait selection
+POST     https://bigheadbillionaires.com/api/agent-session
+         body: { traits: soul.animator.traits, female: false, slot: 1 }
+GET      customizerUrl + animatorUrl from response
+
+// Browser required from here
+OPEN     customizerUrl → character renders automatically, no trait clicking
+OPEN     animatorUrl   → same traits load automatically
+UPLOAD   .mp3 into Animator audio zone
 MAP      emotional beats in script → soul.animator.expression_map values
-SET      expression keyframes in Animator timeline  [BROWSER REQUIRED]
-EXPORT   .mp4                                       [BROWSER REQUIRED]
+SET      expression keyframes in Animator timeline
+EXPORT   .mp4
 ```
