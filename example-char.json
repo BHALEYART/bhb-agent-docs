@@ -1,0 +1,147 @@
+{
+  "_instructions": "Copy this file, rename it to your-character-id.json, and fill in each field. Remove all underscore comment fields before submitting. See AGENT_SCHEMA.md for full field reference and canonical trait names.",
+
+  "schema_version": "1.0",
+  "character_id": "your-character-id",
+  "_character_id_note": "Unique slug. Lowercase letters and hyphens only. Must match the filename. e.g. 'gravel-pete', 'duchess-yolanda'",
+
+  "name": "Your Character Name",
+  "_name_note": "Display name. Can include spaces and capitals. e.g. 'Gravel Pete'",
+
+  "tagline": "One sentence. Who is this character in a nutshell.",
+  "_tagline_note": "Keep it punchy. Think: what would a casting director write about them.",
+
+  "personality": {
+    "archetype": "",
+    "_archetype_note": "Single phrase archetype. e.g. 'grumpy mentor', 'chaotic optimist', 'stoic enforcer', 'reluctant hero'",
+
+    "traits": ["", "", ""],
+    "_traits_note": "Array of adjectives. 3-6 words that define them. e.g. ['blunt', 'loyal', 'pragmatic']",
+
+    "fears": [""],
+    "_fears_note": "What destabilizes or unsettles this character. e.g. ['being forgotten', 'silence']",
+
+    "desires": [""],
+    "_desires_note": "What this character wants or chases. e.g. ['respect', 'a decent sandwich']",
+
+    "flaw": "",
+    "_flaw_note": "Single core flaw. One sentence. e.g. 'Mistakes stubbornness for strength — doubles down even when wrong.'",
+
+    "speaking_style": "",
+    "_speaking_style_note": "Describe how they talk. Cadence, vocabulary, quirks, tone. This feeds into the prompt_prefix. e.g. 'Short sentences. Gravelly cadence. Never uses corporate language. Occasionally tender when off guard.'",
+
+    "never_says": [""],
+    "_never_says_note": "Words or phrases this character would never use. e.g. ['synergy', 'circle back', 'no worries']",
+
+    "always_says": [""],
+    "_always_says_note": "Signature phrases or verbal tics. e.g. ['Look.', 'That is the thing.', 'Fine. But I warned you.']"
+  },
+
+  "backstory": {
+    "origin": "",
+    "_origin_note": "Where they came from. One sentence.",
+
+    "occupation": "",
+    "_occupation_note": "What they do. e.g. 'Retired demolition mogul, reluctant investor'",
+
+    "history": "",
+    "_history_note": "2-4 sentences of lore. Key events, how they got here, what shaped them."
+  },
+
+  "voice": {
+    "elevenlabs_voice_id": null,
+    "_elevenlabs_voice_id_note": "Leave null to use auto-resolution via resolve_voice descriptors below. Or paste a real ElevenLabs voice_id string to lock in a specific voice.",
+
+    "resolve_voice": {
+      "instruction": "Query the ElevenLabs voices API to find the best match. Use GET https://api.elevenlabs.io/v1/voices — no auth required for public voices. Select the voice whose labels best match the descriptors below. Store the resolved voice_id for this session.",
+      "descriptors": {
+        "gender": "",
+        "_gender_note": "male or female",
+
+        "age": "",
+        "_age_note": "young, middle-aged, or old",
+
+        "accent": "",
+        "_accent_note": "e.g. american, british, australian",
+
+        "description": "",
+        "_description_note": "Comma-separated voice quality adjectives. e.g. 'gravelly, warm, authoritative' or 'bright, energetic, playful'",
+
+        "use_case": "",
+        "_use_case_note": "e.g. narrative, conversational, characters"
+      },
+      "fallback_voice_id": "ErXwobaYiN019PkySvjV",
+      "_fallback_note": "Default fallback is Antoni (public ElevenLabs voice). Replace with any known valid voice_id."
+    },
+
+    "stability": 0.45,
+    "_stability_note": "0.0-1.0. Lower = more expressive variance. Recommended range: 0.35-0.55",
+
+    "similarity_boost": 0.75,
+    "_similarity_boost_note": "0.0-1.0. Higher = closer to base voice character.",
+
+    "style": 0.30,
+    "_style_note": "0.0-1.0. Adds stylistic exaggeration. Recommended range: 0.20-0.50",
+
+    "speaker_boost": true,
+    "_speaker_boost_note": "Leave true unless you have a reason to disable it.",
+
+    "notes": "",
+    "_notes_note": "Any special voice direction for humans reading this file. e.g. 'Avoid voices that sound too polished or smooth.'"
+  },
+
+  "animator": {
+    "traits": {
+      "BODY": "",
+      "HEAD": "",
+      "EYES": "",
+      "MOUTH": "",
+      "OUTFIT": "",
+      "TEXTURE": "",
+      "BACKGROUND": ""
+    },
+    "_traits_note": "Use canonical trait names from AGENT_SCHEMA.md → Available Traits. Do not include .png extension. Use 'None' for empty slots.",
+
+    "expression_map": {
+      "happy": "Joy",
+      "neutral": "Stare",
+      "thinking": "Curious",
+      "angry": "Infuriated",
+      "sad": "Ouchy",
+      "surprised": "Surprised",
+      "serious": "Stern",
+      "idle": "Blink"
+    },
+    "_expression_map_note": "These values are fixed Animator expression names — do not change the values. You may add additional emotional keys if needed."
+  },
+
+  "memory": {
+    "knows": [""],
+    "_knows_note": "Facts this character has persistent knowledge of. e.g. 'He sold his company for $340M', 'She has never lost a chess match'",
+
+    "relationships": [
+      {
+        "character_id": "",
+        "dynamic": ""
+      }
+    ],
+    "_relationships_note": "character_id matches another soul file's character_id field. dynamic describes the relationship in one sentence.",
+
+    "notable_events": [""],
+    "_notable_events_note": "Key things that have happened to this character. Used to give agents richer context for dialogue generation."
+  },
+
+  "agent_instructions": {
+    "agent_session_endpoint": "https://bigheadbillionaires.com/api/agent-session",
+    "agent_session_payload": "POST soul.animator.traits to agent_session_endpoint to receive pre-seeded customizerUrl and animatorUrl. Open these URLs in browser — character loads automatically with no manual trait selection.",
+
+    "prompt_prefix": "",
+    "_prompt_prefix_note": "This is the most important field for agents. Write this as a direct instruction to an LLM. Establish voice, tone, rules. e.g. 'You are Gravel Pete. You speak in short sentences. You never use corporate language. Stay in character.'",
+
+    "content_boundaries": [""],
+    "_content_boundaries_note": "Topics or behaviors this character avoids. Used to constrain agent dialogue generation.",
+
+    "default_scene": "",
+    "_default_scene_note": "Suggested Animator background scene. Must be a valid BACKGROUND trait name from AGENT_SCHEMA.md."
+  }
+}
