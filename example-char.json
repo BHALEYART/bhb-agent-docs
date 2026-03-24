@@ -102,6 +102,9 @@
     },
     "_traits_note": "Use canonical trait names from AGENT_SCHEMA.md → Available Traits. Do not include .png extension. Use 'None' for empty slots.",
 
+    "mood_preset": "",
+    "_mood_preset_note": "Auto-expression mood for the Animator. Valid values: 'mad', 'calm', 'happy', 'shocked'. mad = Infuriated/Ouchy/Stern. calm = Curious/Stern/Stare. happy = Curious/Surprised/Joy. shocked = Curious/Ouchy/Surprised. Pick the one that matches this character's default emotional register.",
+
     "expression_map": {
       "happy": "Joy",
       "neutral": "Stare",
