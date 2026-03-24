@@ -51,19 +51,18 @@ Content-Type: application/json
 
 ### Updated Agent Entry Point
 
-With the API and Auto Expressions, browser interaction is reduced to 4 clicks:
+With the API, Auto Expressions auto-enabled, and mood pre-selected, browser interaction is just 2 clicks:
 
 ```
 1. READ    AGENT_SCHEMA.md + [character].json
-2. CALL    POST /api/agent-session with soul.animator.traits → get animatorUrl
+2. CALL    POST /api/agent-session with soul.animator.traits + soul.animator.mood_preset
 3. GENERATE .mp3 via ElevenLabs API using soul.voice params + soul.agent_instructions.prompt_prefix
-4. OPEN    animatorUrl → traits load automatically, no clicking
-5. ENABLE  Auto Expressions → SELECT soul.animator.mood_preset → keyframes auto-generate
-6. UPLOAD  .mp3 → lip sync fires automatically
-7. CLICK   Export → .mp4 downloads
+4. OPEN    animatorUrl → traits load + Auto Expressions enabled + mood preset selected automatically
+5. UPLOAD  .mp3 → lip sync fires automatically, expressions generate automatically
+6. CLICK   Export → .mp4 downloads
 ```
 
-**Total browser actions: 4 clicks.** Everything else is API calls.
+**Total browser actions: 2 clicks** (upload audio + export). Everything else is API calls.
 
 ---
 
@@ -366,10 +365,9 @@ STEP 2  [Agent API]    API CALLABLE →
                        body: { traits: soul.animator.traits, slot: 1 }
                        GET animatorUrl from response
 
-STEP 3  [Animator]     BROWSER — 4 CLICKS →
-                       OPEN    animatorUrl (traits load automatically)
-                       ENABLE  Auto Expressions + SELECT soul.animator.mood_preset
-                       UPLOAD  .mp3 (lip sync fires automatically)
+STEP 3  [Animator]     BROWSER — 2 CLICKS →
+                       OPEN    animatorUrl (traits + autoExpr + mood load automatically)
+                       UPLOAD  .mp3 (lip sync + expressions fire automatically)
                        CLICK   Export
 
 OUTPUT: .mp4 — H.264 video, AAC audio, animated BHB character, lip-synced, auto-expressed
