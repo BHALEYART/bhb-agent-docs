@@ -80,24 +80,27 @@ This repo contains two things:
 /
 ├── README.md               ← You are here. Tool pipeline.
 ├── AGENT_SCHEMA.md         ← Soul file format spec + submission instructions
-└── gravel-pete.json        ← Example soul file (parseable character definition)
+├── gravel-pete.json        ← Example soul file (fully populated)
+└── example-char.json       ← Blank template with field instructions (start here)
 ```
 
 ### Recommended Agent Entry Point
 
 ```
 1. READ    AGENT_SCHEMA.md         — understand soul file structure
-2. LOAD    [character].json        — parse target character
-3. FOLLOW  README.md pipeline      — Customizer → ElevenLabs → Animator → Export
+2. COPY    example-char.json       — blank template with field instructions
+3. FILL    all fields in your copy — use gravel-pete.json as a reference
+4. LOAD    [your-character].json   — parse completed soul file
+5. FOLLOW  README.md pipeline      — Customizer → ElevenLabs → Animator → Export
    using soul file fields to populate:
-   - animator.traits          → Stage 1 (Customizer trait slots)
-   - voice.elevenlabs_voice_id + voice params → Stage 2 (ElevenLabs config)
+   - animator.traits          → POST to /api/agent-session → get pre-seeded URLs
+   - voice.elevenlabs_voice_id or resolve_voice → Stage 2 (ElevenLabs config)
    - animator.expression_map  → Stage 3 (expression keyframes)
    - agent_instructions.prompt_prefix → dialogue generation prompt
-4. EXPORT  .mp4
+6. EXPORT  .mp4
 ```
 
-> To submit a new character soul file, see `AGENT_SCHEMA.md` → Submitting a Character.
+> To submit a completed soul file, see `AGENT_SCHEMA.md` → Submitting a Character.
 
 ---
 
@@ -377,6 +380,7 @@ OUTPUT: .mp4 — H.264 video, AAC audio, animated BHB character, lip-synced
 - ElevenLabs TTS: `https://elevenlabs.io/text-to-speech`
 - ElevenLabs SSML docs: `https://elevenlabs.io/docs/speech-synthesis/prompting`
 - Soul file schema: `AGENT_SCHEMA.md`
+- Blank character template: `example-char.json`
 - Example character: `gravel-pete.json`
 - mp4-muxer (encoder used): `https://github.com/Vanilagy/mp4-muxer`
 - BHB Discord (support): `https://discord.gg/bigheadbillionaires`
